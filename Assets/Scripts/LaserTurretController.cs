@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretController : MonoBehaviour {
+public class LaserTurretController : MonoBehaviour {
 
-    public float demage = 10;
-    public Transform turret;
+    public Transform turret;// 炮台
+    public float demage = 10f;
+    public Transform laserOrigin;//激光发射点
+    public LineRenderer lineRenderer;
     // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // AimWithTag("Cube");
-    }
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
 
     private void AimWithTag(string tag)
     {
@@ -40,13 +40,13 @@ public class TurretController : MonoBehaviour {
          * 锁定y轴，但是没有过渡过程
          * 
          */
-    
+
         Vector3 targetPostition = new Vector3(target.position.x,
                                         turret.position.y,
                                         target.position.z);
         // transform.LookAt(targetPostition);
         turret.LookAt(targetPostition);
-       
+
         //带过渡过程的代码
         /*
         Vector3 lookPos = target.position - transform.position;
@@ -57,11 +57,6 @@ public class TurretController : MonoBehaviour {
         */
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        GameObject obj = collision.gameObject;
-        Debug.Log(obj.tag);
-    }
     private void OnTriggerStay(Collider other)
     {
         GameObject obj = other.gameObject;
@@ -71,7 +66,19 @@ public class TurretController : MonoBehaviour {
             AimWithTag("Cube");
             MoveController mc = obj.GetComponent<MoveController>();
             mc.Demage(demage * Time.deltaTime);
+            FireLaser(obj.transform.position);
             // Debug.Log(mc);
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        FireLaser(laserOrigin.position);
+    }
+
+    private void FireLaser(Vector3 endPoint)
+    {
+        lineRenderer.SetPosition(0, laserOrigin.position);
+        lineRenderer.SetPosition(1, endPoint);
     }
 }

@@ -31,8 +31,8 @@ public class DragHandler : MonoBehaviour,IBeginDragHandler, IDragHandler, IEndDr
     public void OnDrag(PointerEventData eventData)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit[] hits = Physics.RaycastAll(ray, 5000f);
-        Debug.DrawRay(ray.origin, ray.direction, Color.green,Mathf.Infinity);
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+        Debug.DrawRay(ray.origin, ray.direction*1000, Color.green);
         Debug.Log(hits);
         if(hits !=null && hits.Length != 0)
         {
